@@ -40,11 +40,17 @@ function renderHTML(weatherData, tideData) {
   const wx = location.weatherElement.find(el => el.elementName === "Wx");
   const maxT = location.weatherElement.find(el => el.elementName === "MaxT");
   const minT = location.weatherElement.find(el => el.elementName === "MinT");
-
   const tides = tideData.records.location.find(loc => loc.locationName.includes("八里"));
 
-  let html = \`<html><head><meta charset="UTF-8"><title>八里週末預報</title></head><body>\`;
-  html += \`<h1>八里區未來週末預報</h1>\`;
+  let html = `
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>八里週末預報</title>
+    </head>
+    <body>
+      <h1>八里區未來週末預報</h1>
+  `;
 
   weekends.forEach(date => {
     const wxEntry = wx.time.find(t => t.startTime.startsWith(date));
@@ -52,24 +58,27 @@ function renderHTML(weatherData, tideData) {
     const min = minT.time.find(t => t.startTime.startsWith(date));
     const tideEntries = tides.time.filter(t => t.dataTime.startsWith(date));
 
-    html += \`<h3>\${date}</h3>\`;
+    html += `<h3>${date}</h3>`;
     if (wxEntry && max && min) {
-      html += \`<p>🌤 天氣：\${wxEntry.elementValue[0].value}</p>\`;
-      html += \`<p>🌡 氣溫：\${min.elementValue[0].value}–\${max.elementValue[0].value}°C</p>\`;
+      html += `<p>🌤 天氣：${wxEntry.elementValue[0].value}</p>`;
+      html += `<p>🌡 氣溫：${min.elementValue[0].value}–${max.elementValue[0].value}°C</p>`;
     }
 
     if (tideEntries.length > 0) {
-      html += \`<p>🌊 潮汐時間：</p><ul>\`;
+      html += `<p>🌊 潮汐時間：</p><ul>`;
       tideEntries.forEach(tide => {
-        html += \`<li>\${tide.dataTime} - \${tide.value}</li>\`;
+        html += `<li>${tide.dataTime} - ${tide.value}</li>`;
       });
-      html += \`</ul>\`;
+      html += `</ul>`;
     } else {
-      html += \`<p>🌊 無潮汐資料</p>\`;
+      html += `<p>🌊 無潮汐資料</p>`;
     }
   });
 
-  html += \`</body></html>\`;
+  html += `
+    </body>
+  </html>
+  `;
   return html;
 }
 
