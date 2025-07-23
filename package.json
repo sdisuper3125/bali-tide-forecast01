@@ -1,0 +1,10 @@
+{
+  "name": "bali-tide-forecast",
+  "version": "1.0.0",
+  "description": "自動每日更新八里區天氣與潮汐資料",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}
