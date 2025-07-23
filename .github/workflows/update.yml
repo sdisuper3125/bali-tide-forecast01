@@ -1,0 +1,33 @@
+name: Update Webpage Daily
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 0:00，自動執行（台灣早上 8:00）
+  workflow_dispatch:      # 可手動觸發
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (optional)
+        run: npm install || echo "無需安裝套件"
+
+      - name: Generate index.html
+        run: node index.js
+
+      - name: Commit and push index.html
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "每日自動更新 index.html" || echo "無變更"
+          git push
